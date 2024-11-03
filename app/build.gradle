@@ -6,23 +6,28 @@
  */
 
 plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
 }
 
 repositories {
+    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
 dependencies {
-    dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.7.1'
-    implementation 'com.google.guava:guava:31.1-jre'
+    // Use JUnit Jupiter for testing.
+    testImplementation libs.junit.jupiter
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // This dependency is used by the application.
+    implementation libs.guava
+
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
 
-}
-
+// Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -30,25 +35,19 @@ java {
 }
 
 application {
-    mainClass = 'com.madzo.App'
+    // Define the main class for the application.
+    mainClass = 'org.example.App'
 }
 
 tasks.named('test') {
+    // Use JUnit Platform for unit tests.
     useJUnitPlatform()
-}
-
-tasks.register('hello') {
-    doLast {
-        println 'Hello, Gradle Demo!'
-    }
 }
 
 task showProjectInfo {
     doLast {
-        println "Project Name: ${project.name}"
+        println "Project Name: $project.name"
         println "Java Version: ${java.toolchain.languageVersion.get()}"
         println "Main Class: ${application.mainClass.get()}"
     }
 }
-
-
